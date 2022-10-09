@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  portainer-minoapp:
+    image: portainer/portainer-ce:2.9.2
+    restart: always
+    command: -H unix:///var/run/docker.sock
+    ports:
+      - 8000:8000
+      - 9443:9443
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    environment:
+      - TZ=Europe/Paris
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:minoapp.com"
+      - "traefik.docker.network=web"
+      - "traefik.http.services.portainer-minoapp.loadbalancer.server.port=9443"
+    networks :
+      - web
+
+volumes:
+  portainer_data:
+    name: portainer_data
+    external : true
+
+networks:
+ web:
+  external: true

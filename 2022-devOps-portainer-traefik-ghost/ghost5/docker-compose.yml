@@ -13,6 +13,8 @@ services:
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
       - minoapp-mysql-data:/var/lib/mysql
+    mem_limit: 2G
+    cpus: '2'
     environment:
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD 
       MYSQL_USER: $MYSQL_USER
